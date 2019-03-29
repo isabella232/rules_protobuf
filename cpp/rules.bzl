@@ -1,6 +1,7 @@
 load("//protobuf:rules.bzl", "proto_compile", "proto_repositories")
 load("//cpp:deps.bzl", "DEPS")
 load("//cpp:grpc_archive.bzl", "grpc_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def cpp_proto_repositories(
     lang_deps = DEPS,
@@ -25,6 +26,8 @@ def cpp_proto_repositories(
     rule = dep.pop("rule")
     if "grpc_archive" == rule:
       grpc_archive(**dep)
+    elif "http_archive" == rule:
+      http_archive(**dep)
     else:
       fail("Unknown loading rule %s for %s" % (rule, dep))
 
