@@ -67,7 +67,7 @@ def grpc_gateway_proto_library(
   if not go_proto_deps:
     _go_proto_deps += GRPC_COMPILE_DEPS
 
-  pb_args += {
+  pb_args = dict(pb_args, **{
     "name": name + ".pb",
     "protos": protos,
     "deps": [dep + ".pb" for dep in proto_deps],
@@ -80,7 +80,7 @@ def grpc_gateway_proto_library(
     "grpc_options": grpc_options,
     "output_to_workspace": output_to_workspace,
     "verbose": verbose,
-  }
+  })
 
   if protoc:
     pb_args["protoc"] = protoc
