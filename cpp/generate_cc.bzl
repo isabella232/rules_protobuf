@@ -48,7 +48,7 @@ def generate_cc_impl(ctx):
     outs += [proto.path[prefix_len:-len(".proto")] + ".pb.h" for proto in protos]
     outs += [proto.path[prefix_len:-len(".proto")] + ".pb.cc" for proto in protos]
 
-  out_files = [ctx.new_file(out) for out in outs]
+  out_files = [ctx.actions.declare_file(out) for out in outs]
   dir_out = "../../%s/%s" % (str(ctx.genfiles_dir.path), ctx.label.workspace_root)
 
   arguments = []
@@ -94,7 +94,7 @@ def generate_cc_impl(ctx):
 
   ### print("CMDS> %r" % cmds)
 
-  ctx.action(
+  ctx.actions.run_shell(
       inputs = protos + includes + additional_input + well_known_proto_files + [ctx.executable._protoc],
       outputs = out_files,
       command = " && ".join(cmds),
@@ -106,7 +106,7 @@ _generate_cc = rule(
     attrs = {
         "srcs": attr.label_list(
             mandatory = True,
-            non_empty = True,
+            allow_empty = False,
             providers = ["proto"],
         ),
         "plugin": attr.label(

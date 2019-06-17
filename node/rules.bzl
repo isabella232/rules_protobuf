@@ -41,7 +41,7 @@ def _get_js_variable_name(file):
 
 def _node_proto_module_impl(ctx):
   compilation = ctx.attr.compilation.proto_compile_result
-  index_js = ctx.new_file("%s/index.js" % ctx.label.name)
+  index_js = ctx.actions.declare_file("%s/index.js" % ctx.label.name)
 
   exports = {}
 
